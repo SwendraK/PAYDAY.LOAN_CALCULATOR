@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Payday Loan Calculator</title>
+<style>
+:root{--bg:#fdf8f0;--ink:#26246b;--mute:#8d8ba8;--sage:#b9d3b0;--sage2:#9fc293;--rose:#eab7ae;--peach:#f6d3b6;--sky:#b6d5e6;--neg:#c4766c;
+--out:16px 20px 38px rgba(170,135,105,.40),-10px -10px 24px rgba(255,255,255,1),inset 10px 10px 18px rgba(255,255,255,1),inset -12px -14px 24px rgba(200,165,130,.32);
+--pill:8px 10px 20px rgba(170,135,105,.38),-6px -6px 14px rgba(255,255,255,1),inset 4px 4px 9px rgba(255,255,255,1),inset -6px -7px 12px rgba(200,165,130,.30);
+--in:inset 5px 5px 10px rgba(196,168,140,.32),inset -5px -5px 10px rgba(255,255,255,.95);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:transparent;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;position:relative;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+radial-gradient(circle 190px at 6% 8%,rgba(185,211,176,.55),transparent 72%),
+radial-gradient(circle 220px at 98% 30%,rgba(182,213,230,.55),transparent 72%),
+radial-gradient(circle 200px at 4% 78%,rgba(234,183,174,.50),transparent 72%),
+radial-gradient(circle 170px at 90% 96%,rgba(246,211,182,.60),transparent 72%)}
+body::after{content:"";position:fixed;z-index:-1;pointer-events:none;width:210px;height:210px;right:-70px;bottom:-60px;border-radius:50%;
+background:radial-gradient(circle at 32% 26%,#eaf4e5,#b9d3b0 58%,#98bc8d);
+box-shadow:10px 12px 26px rgba(150,130,110,.30),-6px -6px 16px rgba(255,255,255,.9),inset -10px -14px 24px rgba(90,130,80,.25),inset 8px 8px 16px rgba(255,255,255,.55)}
+main{max-width:480px;margin:0 auto;padding:30px 18px 64px}
+h1{font-size:1.75rem;font-weight:800;letter-spacing:-.02em;margin:0 0 24px;color:var(--ink)}
+.card{background:linear-gradient(145deg,#fffdf8,#f8efe2);border-radius:36px;padding:24px;margin-bottom:28px;box-shadow:var(--out)}
+section.card:nth-of-type(1){background:linear-gradient(145deg,#fffaf3,#fbe9d8)}
+section.card:nth-of-type(4){background:linear-gradient(145deg,#fbfdfe,#e4eff6)}
+label{color:var(--mute);display:block;margin-bottom:7px;font-size:.85rem;font-weight:600}
+input[type=number]{width:100%;padding:12px 16px;border:0;border-radius:18px;background:var(--bg);box-shadow:var(--in);color:var(--ink);font:inherit;font-weight:600}
+input:focus-visible{outline:2px solid var(--sage2);outline-offset:3px}
+.amtbox{display:flex;align-items:center;border-radius:24px;padding:10px 18px;margin-bottom:20px;background:var(--bg);box-shadow:var(--in)}
+.amtbox span{font-size:1.6rem;margin-right:8px;color:var(--mute);font-weight:700}
+#amount{border:0;background:transparent;box-shadow:none;color:var(--ink);font:inherit;font-size:1.8rem;font-weight:800;width:100%;outline:none;padding:0;border-radius:0}
+.amtbox:focus-within{outline:2px solid var(--sage2);outline-offset:3px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:18px;border-radius:999px;background:var(--bg);box-shadow:var(--in);outline:none;margin:8px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:36px;height:36px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 33% 28%,#f1f8ee,var(--sage) 55%,var(--sage2));box-shadow:5px 7px 12px rgba(150,130,110,.42),-3px -3px 8px rgba(255,255,255,.95),inset -4px -5px 8px rgba(80,120,70,.28),inset 3px 3px 6px rgba(255,255,255,.7)}
+input[type=range]::-moz-range-thumb{width:36px;height:36px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 33% 28%,#f1f8ee,var(--sage) 55%,var(--sage2));box-shadow:5px 7px 12px rgba(150,130,110,.42),-3px -3px 8px rgba(255,255,255,.95),inset -4px -5px 8px rgba(80,120,70,.28)}
+#daysSlider::-webkit-slider-thumb{background:radial-gradient(circle at 33% 28%,#eef7fc,var(--sky) 55%,#92bad1);box-shadow:5px 7px 12px rgba(150,130,110,.42),-3px -3px 8px rgba(255,255,255,.95),inset -4px -5px 8px rgba(60,110,150,.28),inset 3px 3px 6px rgba(255,255,255,.7)}
+#daysSlider::-moz-range-thumb{background:radial-gradient(circle at 33% 28%,#eef7fc,var(--sky) 55%,#92bad1)}
+#roiSlider::-webkit-slider-thumb{background:radial-gradient(circle at 33% 28%,#fdf0ed,var(--rose) 55%,#d99a90);box-shadow:5px 7px 12px rgba(150,130,110,.42),-3px -3px 8px rgba(255,255,255,.95),inset -4px -5px 8px rgba(170,80,70,.25),inset 3px 3px 6px rgba(255,255,255,.7)}
+#roiSlider::-moz-range-thumb{background:radial-gradient(circle at 33% 28%,#fdf0ed,var(--rose) 55%,#d99a90)}
+input[type=range]:focus-visible::-webkit-slider-thumb{outline:2px solid var(--ink);outline-offset:3px}
+.ends{display:flex;justify-content:space-between;color:var(--mute);font-size:.78rem;font-weight:600}
+.sl{margin-top:24px}
+.sl .top{display:flex;justify-content:space-between;align-items:baseline}
+.sl .top label{margin:0}
+.sl .top strong{font-size:.95rem;font-weight:800;padding:4px 12px;border-radius:999px;background:var(--bg);box-shadow:var(--in)}
+details summary{list-style:none;display:inline-block;cursor:pointer;font-weight:800;padding:10px 20px;border-radius:999px;background:linear-gradient(145deg,#fffdf8,#f6e4d2);box-shadow:var(--pill)}
+details summary::-webkit-details-marker{display:none}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;font-weight:600}
+.row+.row{border-top:2px dotted rgba(196,168,140,.38)}
+.row>span:first-child::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:10px;vertical-align:-1px;background:radial-gradient(circle at 35% 30%,#fff,var(--sage));box-shadow:2px 2px 4px rgba(150,130,110,.35),inset -1px -2px 3px rgba(60,100,50,.25)}
+.row:nth-child(2)>span:first-child::before{background:radial-gradient(circle at 35% 30%,#fff,var(--rose))}
+.row:nth-child(3)>span:first-child::before{background:radial-gradient(circle at 35% 30%,#fff,var(--peach))}
+.row:nth-child(4)>span:first-child::before{background:radial-gradient(circle at 35% 30%,#fff,var(--sky))}
+.row.cut span:last-child{color:var(--neg)}
+.row.big{font-weight:800;font-size:1.05rem;background:linear-gradient(145deg,#d9ebd0,var(--sage));border-radius:24px;padding:16px 20px;margin-top:12px;border-top:0;box-shadow:var(--pill);color:#26402b}
+.row.big>span:first-child::before{display:none}
+.net{background:linear-gradient(145deg,#f9dccf,var(--rose));border-radius:36px;padding:26px;color:#5b2d27;box-shadow:16px 20px 38px rgba(180,120,105,.45),-10px -10px 24px rgba(255,255,255,1),inset 10px 10px 18px rgba(255,255,255,.7),inset -12px -14px 24px rgba(190,100,90,.32)}
+.net p{margin:0;font-size:.9rem;font-weight:700;opacity:.8}
+.net strong{display:block;font-size:2.3rem;font-weight:800;letter-spacing:-.02em}
+.hint{color:var(--mute);font-size:.8rem;margin:10px 0 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Payday Loan Calculator</h1>
+
+<section class="card">
+<details>
+<summary>Settings</summary>
+<div class="g">
+<div><label for="min">Minimum amount (₹)</label><input id="min" type="number" value="5000" oninput="settings()"></div>
+<div><label for="max">Maximum amount (₹)</label><input id="max" type="number" value="200000" oninput="settings()"></div>
+<div><label for="fee">Processing fee (%)</label><input id="fee" type="number" step="0.1" value="10" oninput="settings()"></div>
+<div><label for="gst">GST on fee (%)</label><input id="gst" type="number" step="0.1" value="18" oninput="settings()"></div>
+</div>
+</details>
+</section>
+
+<section class="card">
+<label for="amount">Loan amount</label>
+<div class="amtbox"><span>₹</span><input id="amount" type="number" inputmode="numeric" value="50000" oninput="fromBox()"></div>
+<input id="slider" type="range" min="5000" max="200000" step="1000" value="50000" oninput="fromSlider()" onchange="fromSlider()">
+<div class="ends"><span id="lo">₹5,000</span><span id="hi">₹2,00,000</span></div>
+
+<div class="sl">
+<div class="top"><label for="daysSlider">Tenure</label><strong id="daysVal">30 days</strong></div>
+<input id="daysSlider" type="range" min="1" max="30" step="1" value="30" oninput="show()" onchange="show()">
+<div class="ends"><span>1 day</span><span>30 days</span></div>
+</div>
+
+<div class="sl">
+<div class="top"><label for="roiSlider">Interest rate</label><strong id="roiVal">1% per day</strong></div>
+<input id="roiSlider" type="range" min="1" max="18" step="0.5" value="1" oninput="show()" onchange="show()">
+<div class="ends"><span>1%</span><span>18%</span></div>
+</div>
+</section>
+
+<section class="card">
+<div class="row"><span>Loan amount</span><span id="principal">-</span></div>
+<div class="row cut"><span id="feeLabel">Processing fee</span><span id="feeAmt">-</span></div>
+<div class="row cut"><span id="gstLabel">GST</span><span id="gstAmt">-</span></div>
+<div class="row big"><span>Client receives</span><span id="receive">-</span></div>
+</section>
+
+<section class="card">
+<div class="row"><span>Loan amount</span><span id="principal2">-</span></div>
+<div class="row"><span id="dailyLabel">Interest per day</span><span id="daily">-</span></div>
+<div class="row"><span id="intLabel">Interest</span><span id="interest">-</span></div>
+</section>
+
+<div class="net"><p id="repayLabel">Client repays</p><strong id="total">-</strong></div>
+</main>
+<script>
+function $(i){return document.getElementById(i);}
+function inr(n){return "₹"+Math.round(n).toLocaleString("en-IN");}
+function num(i){var x=Number($(i).value);return isNaN(x)||x<0?0:x;}
+function show(){
+  var p=num("amount"),days=num("daysSlider"),roi=num("roiSlider"),feePct=num("fee"),gstPct=num("gst");
+  var fee=p*feePct/100,gst=fee*gstPct/100,interest=p*roi/100*days;
+  var receive=p-fee-gst,total=p+interest;
+  $("daysVal").textContent=days+(days===1?" day":" days");
+  $("roiVal").textContent=roi+"% per day";
+  $("principal").textContent=inr(p);
+  $("feeLabel").textContent="Processing fee ("+feePct+"%)";
+  $("feeAmt").textContent="- "+inr(fee);
+  $("gstLabel").textContent="GST ("+gstPct+"% on fee)";
+  $("gstAmt").textContent="- "+inr(gst);
+  $("receive").textContent=inr(receive);
+  $("principal2").textContent=inr(p);
+  $("dailyLabel").textContent="Interest per day ("+roi+"%)";
+  $("daily").textContent=inr(p*roi/100);
+  $("intLabel").textContent="Interest ("+roi+"% x "+days+(days===1?" day":" days")+")";
+  $("interest").textContent=inr(interest);
+  $("repayLabel").textContent="Client repays after "+days+(days===1?" day":" days");
+  $("total").textContent=inr(total);
+}
+function settings(){
+  var lo=num("min"),hi=num("max");
+  if(hi<lo)hi=lo;
+  $("slider").min=lo;$("slider").max=hi;
+  $("lo").textContent=inr(lo);$("hi").textContent=inr(hi);
+  show();
+}
+function fromSlider(){$("amount").value=$("slider").value;show();}
+function fromBox(){
+  $("slider").value=Math.min(Math.max(num("amount"),num("min")),num("max"));
+  show();
+}
+show();
+</script>
+</body>
+</html>
